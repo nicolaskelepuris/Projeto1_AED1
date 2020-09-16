@@ -6,6 +6,7 @@ namespace Projeto1AED1
 {
     class Basket
     {
+        // basketItem has a Product and its Quantity
         private Dictionary<Product, int> basketItem;
 
         public Basket()
@@ -20,6 +21,7 @@ namespace Projeto1AED1
             // add item to basket if this basket does not contain this product, else only update it's quantit
             if (!basketItem.ContainsKey(product))
             {
+                // check if quantity of product that customer asked for is available in stock
                 if (quantityOfProductsInStock >= quantityOfProductToBeAddedOrUpdatedInBasket)
                 {
                     basketItem.Add(product, quantityOfProductToBeAddedOrUpdatedInBasket);
@@ -33,6 +35,7 @@ namespace Projeto1AED1
             }
             else
             {
+                // check if quantity of product that customer asked for is available in stock
                 if (quantityOfProductsInStock >= quantityOfProductToBeAddedOrUpdatedInBasket)
                 {
                     basketItem[product] = quantityOfProductToBeAddedOrUpdatedInBasket;

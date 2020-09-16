@@ -26,39 +26,44 @@ namespace Projeto1AED1
             return new Address(addressID++, street, houseNumber, city, customerName);
         }
 
-        public static Basket PrintListOfProductsAvailableToSell(Basket basket = null)
+        public static void PrintListOfProductsAvailableToSell()
         {
             foreach (var product in listOfProductsRegistered)
             {
                 var quantityOfProductInStock = Stock.GetStockQuantityOfProduct(product);
                 if (quantityOfProductInStock > 0)
                 {
-                    Console.WriteLine("\nProduto: {0}    |     Valor: {1}    |    Quantidade no estoque: {2}    |    ID do produto: {3}\n", product.Name,
-                                    product.Price, quantityOfProductInStock, product.ID);
+                    Console.WriteLine("\nProduto: {0}    |     Descricao: {1}    |     Valor: {2}    |    Quantidade no estoque: {3}    |    ID do produto: {4}\n",
+                                    product.Name, product.Description, product.Price, quantityOfProductInStock, product.ID); ;
                 }
             }
-
-            // will return a basket if is showing products for client to add more items to an existing basket, else return null
-            return basket;
         }
 
+        // Parameter basket is needed when customer already has a basket and wants to insert more products before confirming order
         public static Basket AskForWhichProductsCustomerWantsToBuy(Basket basket = null)
         {
             Console.WriteLine("\nFavor informar quantos produtos distintos gostaria de comprar.");
             var quantityOfDistinctProductsCustomerWantsToBuy = int.Parse(Console.ReadLine());
+
+            // newBasket received param basket if not null
             Basket newBasket = basket ?? new Basket();
 
             for (int i = 0; i < quantityOfDistinctProductsCustomerWantsToBuy; i++)
             {
                 Product product = null;
+
+                // ask for product id until customer sends a valid id
                 while(product == null)
                 {
                     Console.WriteLine("\nFavor informar o ID do produto numero {0} que deseja comprar: ", i + 1);
                     var productID = int.Parse(Console.ReadLine());
                     product = ProductsRegisterManager.GetProductRegisteredByID(productID);
                 }
+
                 Console.WriteLine("\nFavor informar a quantidade do produto {0} que deseja comprar: ", product.Name);
                 var quantityOfProductCustomerWantsToBuy = int.Parse(Console.ReadLine());
+
+                // insert item into basket
                 newBasket.AddOrUpdateItemToBasket(product, quantityOfProductCustomerWantsToBuy);
             }
 
@@ -73,20 +78,24 @@ namespace Projeto1AED1
             switch (customerOptionToCreateOrderOrBuyMoreItems)
             {
                 case 1:
+                    // create order and finish application
                     var address = AskForCustomerAddress();
                     OrderRegister.CreateOrder(new Order(basket, address, orderID++));
                     break;
                 case 2:
-                    var basketToBeUpdatedWithMoreItems = PrintListOfProductsAvailableToSell(basket);
-                    var basketUpdated = AskForWhichProductsCustomerWantsToBuy(basketToBeUpdatedWithMoreItems);
+                    // send customer back to fill basket with an existing basket
+                    PrintListOfProductsAvailableToSell();
+                    var basketUpdated = AskForWhichProductsCustomerWantsToBuy(basket);
                     AskCustomerToCreateOrderOrBuyMore(basketUpdated);
                     break;
                 case 3:
+                    // send customer back to fill basket with an empty basket
                     PrintListOfProductsAvailableToSell();
                     var newBasket = AskForWhichProductsCustomerWantsToBuy();
                     AskCustomerToCreateOrderOrBuyMore(newBasket);
                     break;
                 default:
+                    // AskCustomerToCreateOrderOrBuyMore again
                     Console.WriteLine("\nOpcao invalida.");
                     AskCustomerToCreateOrderOrBuyMore(basket);
                     break;
