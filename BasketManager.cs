@@ -20,7 +20,7 @@ namespace Projeto1AED1
                                     product, quantityOfProductsInStock);
                 }
 
-                Console.WriteLine("Produto: {0}    |     Quantidade: {1}    |     Valor unitario: {2}", product.Name, basketItems[product], product.Price);
+                Console.WriteLine("Produto: {0}    |     Quantidade: {1}    |     Valor unitario: {2}    |     Valor total do item: {3}", product.Name, basketItems[product], product.Price, (decimal)basketItems[product] * product.Price);
             }
         }
     }
