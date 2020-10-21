@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Projeto1AED1
 {
-    class Product
+    public class Product
     {
         public int ID { get; private set; }
         public string Name { get; private set; }

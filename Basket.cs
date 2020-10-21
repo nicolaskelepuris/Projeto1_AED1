@@ -48,6 +48,9 @@ namespace Projeto1AED1
                 }
             }
             Console.WriteLine("\nItem adicionado ao carrinho:\nProduto: {0}    |     Quantidade: {1}    |     Valor unitario: {2}", product.Name, basketItem[product], product.Price);
+            
+            var basketItems = this.GetCopyOfListOfItemsInBasket();
+            BasketManager.PrintAllBasketItems(basketItems);
         }
 
         public Dictionary<Product, int> GetCopyOfListOfItemsInBasket()

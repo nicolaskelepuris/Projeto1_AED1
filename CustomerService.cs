@@ -26,6 +26,20 @@ namespace Projeto1AED1
             return new Address(addressID++, street, houseNumber, city, customerName);
         }
 
+        private static CreditCard AskForCustomerCreditCard()
+        {
+            Console.WriteLine("\nFavor informar os dados do cartao de credito que sera usado no pagamento. \n\nNumero do cartao: ");
+            var creditCardNumber = Console.ReadLine();
+
+            Console.WriteLine("\nNome do titular do cartao: ");
+            var creditCardOwnerName = Console.ReadLine();
+
+            Console.WriteLine("\nCodigo de segurança: ");
+            var creditCardSecurityCode = Console.ReadLine();
+
+            return new CreditCard(creditCardNumber, creditCardOwnerName, creditCardSecurityCode);
+        }
+
         public static void PrintListOfProductsAvailableToSell()
         {
             foreach (var product in listOfProductsRegistered)
@@ -80,11 +94,14 @@ namespace Projeto1AED1
                 case 1:
                     // create order and finish application
                     var address = AskForCustomerAddress();
+                    var creditCard = AskForCustomerCreditCard();
                     OrderRegister.CreateOrder(new Order(basket, address, orderID++));
                     break;
                 case 2:
                     // send customer back to fill basket with an existing basket
                     PrintListOfProductsAvailableToSell();
+                    var basketItems = basket.GetCopyOfListOfItemsInBasket();
+                    BasketManager.PrintAllBasketItems(basketItems);
                     var basketUpdated = AskForWhichProductsCustomerWantsToBuy(basket);
                     AskCustomerToCreateOrderOrBuyMore(basketUpdated);
                     break;
